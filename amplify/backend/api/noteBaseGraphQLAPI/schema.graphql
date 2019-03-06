@@ -1,0 +1,18 @@
+type User @model {
+  id: ID!
+  name: String!
+  noteBases: [Note] @connection(name: "UserNote")
+}
+type Note @model @searchable {
+  id: ID!
+  title: String!
+  code: String
+  text: String
+  notes: Note @connection(name: "UserNote")
+  comments: [Comment] @connection(name: "NoteComments")
+}
+type Comment @model {
+  id: ID!
+  content: String
+  post: Note @connection(name: "NoteComments")
+}

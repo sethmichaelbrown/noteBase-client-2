@@ -1,6 +1,0 @@
-type Note @model {
-  id: ID!
-  name: String!
-  codeNote: String
-  textNote: String
-}

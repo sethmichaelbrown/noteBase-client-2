@@ -12,7 +12,7 @@
 		}
 	},
 	"api": {
-		"notebase2": {
+		"noteBaseGraphQLAPI": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {

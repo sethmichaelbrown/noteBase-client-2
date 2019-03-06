@@ -7,15 +7,6 @@ import '../../styles/greeting.css'
 
 class Greeting extends Component {
 
-  state = {
-    username: ''
-  }
-
-  componentDidMount = () => {
-    const newState = { ...this.state }
-    newState.username = localStorage.getItem('CognitoIdentityServiceProvider.2cu6kte7i054cuudogranfid4l.LastAuthUser')
-    this.setState({ username: newState.username })
-  }
 
   render() {
     return (
@@ -25,7 +16,7 @@ class Greeting extends Component {
             <p>Image Here</p>
           </div>
           <div className="col-md-7">
-            <h4>Hello, {this.state.username}</h4>
+            <h4>Hello, {this.props.username}</h4>
             <h6>10 Bases in 3 Languages</h6>
           </div>
         </div>

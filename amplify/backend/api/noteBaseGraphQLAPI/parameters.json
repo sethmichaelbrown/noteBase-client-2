@@ -1,5 +1,5 @@
 {
-    "AppSyncApiName": "notebase2",
+    "AppSyncApiName": "noteBaseGraphQLAPI",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [

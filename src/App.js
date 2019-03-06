@@ -10,30 +10,7 @@ import NavBar from './components/NavBar'
 import Home from './components/homepage/Home'
 import MyAccount from './components/myaccount/MyAccount'
 
-const listNotes = `query listNotes {
-  listNotes{
-    items{
-      id
-      name
-      codeNote
-      textNote
-    }
-  }
-}`
-
-const addNote = `mutation createNote($name:String! $codeNote:String $textNote:String) {
-  createNote(input:{
-    name:$name
-    codeNote:$codeNote
-    textNote:$textNote
-  }){
-    id
-    name
-    codeNote
-    textNote
-  }
-}`
-
+import getUser from './graphql/queries'
 
 
 class App extends Component {
@@ -48,9 +25,10 @@ class App extends Component {
 
   componentDidMount = async () => {
     const newState = { ...this.state }
-    const response = await API.graphql(graphqlOperation(listNotes))
-    newState.userBases = JSON.stringify(response.data.listNotes.items)
-    this.setState({ userBases: newState.userBases })
+    // const response = await API.graphql(graphqlOperation(listNotes))
+    // newState.userBases = JSON.stringify(response.data.listNotes.items)
+    // this.setState({ userBases: newState.userBases })
+    console.log(this.state)
 
   }
 
@@ -72,15 +50,15 @@ class App extends Component {
 
   }
 
-  updateBase = async () => {
-    const updatedNote = {
-      name: this.state.newBaseName,
-      codeNote: this.state.newCodeNote,
-      textNote: this.state.newTextNote
-    };
-    const newEvent = await API.graphql(graphqlOperation(addNote, updatedNote))
-    console.log(JSON.stringify(newEvent))
-  }
+  // updateBase = async () => {
+  //   const updatedNote = {
+  //     name: this.state.newBaseName,
+  //     codeNote: this.state.newCodeNote,
+  //     textNote: this.state.newTextNote
+  //   };
+  //   const newEvent = await API.graphql(graphqlOperation(addNote, updatedNote))
+  //   console.log(JSON.stringify(newEvent))
+  // }
 
 
   uploadFile = (evt) => {
@@ -97,6 +75,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <NavBar />
+          {console.log(getUser())}
 
           <Switch>
             <Route exact path="/" render={() => <Home newBase={this.newBase} userBases={this.state.userBases} />} />
