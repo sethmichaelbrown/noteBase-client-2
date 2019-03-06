@@ -1,0 +1,21 @@
+.margin-top {
+  margin-top: 10vh;
+}
+
+.recents-display-flex {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.new-base-btn {
+  width: 192px;
+  height: 266px;
+  border-radius: 0;
+}
+
+svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}

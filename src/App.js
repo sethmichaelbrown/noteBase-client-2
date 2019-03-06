@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-import Amplify, { Storage, API, graphqlOperation } from 'aws-amplify'
-import { withAuthenticator, S3Album } from 'aws-amplify-react'
+import { Storage, API, graphqlOperation } from 'aws-amplify'
+import { Auth, withAuthenticator } from 'aws-amplify-react'
 
-import randomWordArray from './RandomWord'
+import randomWordArray from './components/RandomWord'
+import NavBar from './components/NavBar'
+import Greeting from './components/homepage/Greeting'
+import RecentBases from './components/homepage/RecentBases'
 
 const listNotes = `query listNotes {
   listNotes{
@@ -31,43 +33,53 @@ const addNote = `mutation createNote($name:String! $codeNote:String $textNote:St
   }
 }`
 
+
+
 class App extends Component {
 
-  state={
-    inputVal: '',
-    newBaseName: ''
+  state = {
+    newBaseName: '',
+    newCodeNote: '',
+    newTextNote: '',
+    userBases: []
+  }
+
+  componentDidMount = async () => {
+    const newState = { ...this.state }
+    const response = await API.graphql(graphqlOperation(listNotes))
+    newState.userBases = JSON.stringify(response.data.listNotes.items)
+    this.setState({ userBases: newState.userBases })
+
   }
 
   randomNameGenerator = () => {
-
+    const rWA = randomWordArray
+    let generatedBaseName = []
+    for (let i = 0; i < 3; i++) {
+      let randomValue = Math.floor(Math.random() * Math.floor(rWA.length - 1))
+      generatedBaseName.push(rWA[randomValue])
+    }
+    const newState = { ...this.state }
+    newState.newBaseName = generatedBaseName.join('-')
+    this.setState({ newBaseName: newState.newBaseName })
   }
 
-  updateState = (event) => {
-    let value = event.target.value.split(' ').join('-')
-    this.setState({newBaseName: event.target.value})
-  }
 
   newBase = async (event) => {
-
-  
+    this.randomNameGenerator()
 
   }
 
-  todoMutation = async () => {
+  updateBase = async () => {
     const updatedNote = {
       name: this.state.newBaseName,
-      codeNote: "console.log('Hello World!')",
-      textNote: "How to log 'Hello World!'"
+      codeNote: this.state.newCodeNote,
+      textNote: this.state.newTextNote
     };
     const newEvent = await API.graphql(graphqlOperation(addNote, updatedNote))
     console.log(JSON.stringify(newEvent))
   }
 
-  listQuery = async () => {
-    console.log('listing todos')
-    const allNotes = await API.graphql(graphqlOperation(listNotes))
-    const response = JSON.stringify(allNotes.data.listNotes.items.map(item => console.log(item)))
-  }
 
   uploadFile = (evt) => {
     const file = evt.target.files[0]
@@ -81,21 +93,41 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/* Move to user settings page */}
-        {console.log(randomWordArray[0])}
-        <p> Pick a file</p>
-        <input type="file" onChange={this.uploadFile} />
-        <button onClick={this.listQuery}>GraphQL Query</button>
-        <button onClick={this.todoMutation}>GraphQL Mutation</button>
-        
-        <S3Album level="private" path='' />
+        <NavBar />
 
-        <input type="text" onKeyUp={this.updateState}/>
-        <button onClick={this.newBase} disabled={this.state.newBaseName ? '' : 'disabled'}>New Base</button>
-        {/* End Move to user settings page */}
+        <div className="homepage">
+          <div className="row container">
+            <div className="col-md-4">
+              <Greeting />
+            </div>
+            <div className="col-md-7 offset-md-1">
+              <RecentBases
+                userBases={this.state.userBases}/>
+            </div>
+          </div>
+        </div>
+
+
       </div>
     );
   }
 }
 
-export default withAuthenticator(App);
+export default withAuthenticator(App)
+
+
+
+{/* Move to user settings page */ }
+{/* <p> Pick a file</p>
+        <input type="file" onChange={this.uploadFile} />
+        <button onClick={this.listQuery}>GraphQL Query</button>
+        <button onClick={this.todoMutation}>GraphQL Mutation</button>
+
+        <S3Album level="private" path='' />
+         {/* End Move to user settings page */}
+
+{/* <input type="text" onKeyUp={this.updateState} /> */ }
+
+{/* 
+        <button onClick={this.newBase}>New Base</button>
+        {this.state.newBaseName ? <div>{this.state.newBaseName}</div> : ''} */}
