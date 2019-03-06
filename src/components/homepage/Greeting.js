@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+
 // import {LinkContainer} from ''
 
 import '../../styles/greeting.css'
@@ -8,7 +9,6 @@ class Greeting extends Component {
 
   state = {
     username: ''
-
   }
 
   componentDidMount = () => {
@@ -29,12 +29,12 @@ class Greeting extends Component {
             <h6>10 Bases in 3 Languages</h6>
           </div>
         </div>
-        <div className="row mt-3">
+        <div className="row mt-3 greeting-display-flex">
           <div className="col-md-6">
-            <button type="button" class="btn btn-outline-dark btn-block">My Account</button>
+            <button type="button" className="btn btn-outline-dark">My Account</button>
           </div>
           <div className="col-md-6">
-            <button type="button" class="btn btn-outline-dark btn-block">Sign Out</button>
+            <button type="button" className="btn btn-outline-dark" onClick={this.props.signOut}>Sign Out</button>
           </div>
         </div>
 

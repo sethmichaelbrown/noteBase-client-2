@@ -3,11 +3,12 @@ import './App.css';
 
 import { Storage, API, graphqlOperation } from 'aws-amplify'
 import { Auth, withAuthenticator } from 'aws-amplify-react'
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 
 import randomWordArray from './components/RandomWord'
 import NavBar from './components/NavBar'
-import Greeting from './components/homepage/Greeting'
-import RecentBases from './components/homepage/RecentBases'
+import Home from './components/homepage/Home'
+import MyAccount from './components/myaccount/MyAccount'
 
 const listNotes = `query listNotes {
   listNotes{
@@ -38,6 +39,7 @@ const addNote = `mutation createNote($name:String! $codeNote:String $textNote:St
 class App extends Component {
 
   state = {
+    authd: true,
     newBaseName: '',
     newCodeNote: '',
     newTextNote: '',
@@ -92,42 +94,20 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <NavBar />
+      <Router>
+        <div className="App">
+          <NavBar />
 
-        <div className="homepage">
-          <div className="row container">
-            <div className="col-md-4">
-              <Greeting />
-            </div>
-            <div className="col-md-7 offset-md-1">
-              <RecentBases
-                userBases={this.state.userBases}/>
-            </div>
-          </div>
+          <Switch>
+            <Route exact path="/" render={() => <Home newBase={this.newBase} userBases={this.state.userBases} />} />
+            <Route exact path="/my-account" render={() => <MyAccount/>} />
+
+          </Switch>
+
         </div>
-
-
-      </div>
+      </Router>
     );
   }
 }
 
 export default withAuthenticator(App)
-
-
-
-{/* Move to user settings page */ }
-{/* <p> Pick a file</p>
-        <input type="file" onChange={this.uploadFile} />
-        <button onClick={this.listQuery}>GraphQL Query</button>
-        <button onClick={this.todoMutation}>GraphQL Mutation</button>
-
-        <S3Album level="private" path='' />
-         {/* End Move to user settings page */}
-
-{/* <input type="text" onKeyUp={this.updateState} /> */ }
-
-{/* 
-        <button onClick={this.newBase}>New Base</button>
-        {this.state.newBaseName ? <div>{this.state.newBaseName}</div> : ''} */}
