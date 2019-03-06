@@ -5,6 +5,8 @@ import './App.css';
 import Amplify, { Storage, API, graphqlOperation } from 'aws-amplify'
 import { withAuthenticator, S3Album } from 'aws-amplify-react'
 
+import randomWordArray from './RandomWord'
+
 const listNotes = `query listNotes {
   listNotes{
     items{
@@ -32,16 +34,28 @@ const addNote = `mutation createNote($name:String! $codeNote:String $textNote:St
 class App extends Component {
 
   state={
-    inputVal: ''
+    inputVal: '',
+    newBaseName: ''
+  }
+
+  randomNameGenerator = () => {
+
   }
 
   updateState = (event) => {
-    this.setState({inputVal: event.target.value}, () => console.log(this.state))
+    let value = event.target.value.split(' ').join('-')
+    this.setState({newBaseName: event.target.value})
+  }
+
+  newBase = async (event) => {
+
+  
+
   }
 
   todoMutation = async () => {
     const updatedNote = {
-      name: this.state.inputVal,
+      name: this.state.newBaseName,
       codeNote: "console.log('Hello World!')",
       textNote: "How to log 'Hello World!'"
     };
@@ -68,13 +82,16 @@ class App extends Component {
     return (
       <div className="App">
         {/* Move to user settings page */}
+        {console.log(randomWordArray[0])}
         <p> Pick a file</p>
         <input type="file" onChange={this.uploadFile} />
         <button onClick={this.listQuery}>GraphQL Query</button>
         <button onClick={this.todoMutation}>GraphQL Mutation</button>
+        
         <S3Album level="private" path='' />
 
         <input type="text" onKeyUp={this.updateState}/>
+        <button onClick={this.newBase} disabled={this.state.newBaseName ? '' : 'disabled'}>New Base</button>
         {/* End Move to user settings page */}
       </div>
     );
