@@ -4,6 +4,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import Amplify, { Storage, API, graphqlOperation } from 'aws-amplify'
+import config from './aws-exports'
+Amplify.configure(config)
+Storage.configure({ level: 'private' })
+
+
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

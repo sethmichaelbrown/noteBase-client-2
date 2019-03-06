@@ -1,0 +1,13 @@
+{
+    "bucketName": "nb2bucket",
+    "authPolicyName": "s3_amplify_42755090",
+    "unauthPolicyName": "s3_amplify_42755090",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authPermissions": "rw",
+    "unauthPermissions": ""
+}

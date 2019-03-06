@@ -1,0 +1,19 @@
+{
+    "nbapp": {
+        "awscloudformation": {
+            "AuthRoleName": "notebase2-20190305160412-authRole",
+            "UnauthRoleArn": "arn:aws:iam::075146461562:role/notebase2-20190305160412-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::075146461562:role/notebase2-20190305160412-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "notebase2-20190305160412-deployment",
+            "UnauthRoleName": "notebase2-20190305160412-unauthRole",
+            "StackName": "notebase2-20190305160412",
+            "StackId": "arn:aws:cloudformation:us-west-2:075146461562:stack/notebase2-20190305160412/fe504e20-3f9a-11e9-8837-0a746071dd90"
+        },
+        "categories": {
+            "auth": {
+                "cognito06ec5196": {}
+            }
+        }
+    }
+}
