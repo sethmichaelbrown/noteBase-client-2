@@ -31,25 +31,32 @@ const addNote = `mutation createNote($name:String! $codeNote:String $textNote:St
 
 class App extends Component {
 
+  state={
+    inputVal: ''
+  }
+
+  updateState = (event) => {
+    this.setState({inputVal: event.target.value}, () => console.log(this.state))
+  }
+
   todoMutation = async () => {
-    const todoDetails = {
-      name: 'Party tonight!',
+    const updatedNote = {
+      name: this.state.inputVal,
       codeNote: "console.log('Hello World!')",
       textNote: "How to log 'Hello World!'"
     };
-    console.log('todoDetails', todoDetails)
-    const newEvent = await API.graphql(graphqlOperation(addNote, todoDetails));
-    console.log(JSON.stringify(newEvent));
+    const newEvent = await API.graphql(graphqlOperation(addNote, updatedNote))
+    console.log(JSON.stringify(newEvent))
   }
 
   listQuery = async () => {
-    console.log('listing todos');
-    const allTodos = await API.graphql(graphqlOperation(listNotes));
-    console.log(JSON.stringify(allTodos));
+    console.log('listing todos')
+    const allNotes = await API.graphql(graphqlOperation(listNotes))
+    const response = JSON.stringify(allNotes.data.listNotes.items.map(item => console.log(item)))
   }
 
   uploadFile = (evt) => {
-    const file = evt.target.files[0];
+    const file = evt.target.files[0]
     const name = file.name;
 
     Storage.put(name, file).then(() => {
@@ -66,6 +73,8 @@ class App extends Component {
         <button onClick={this.listQuery}>GraphQL Query</button>
         <button onClick={this.todoMutation}>GraphQL Mutation</button>
         <S3Album level="private" path='' />
+
+        <input type="text" onKeyUp={this.updateState}/>
         {/* End Move to user settings page */}
       </div>
     );
